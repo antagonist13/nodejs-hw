@@ -40,10 +40,21 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'Hello, World!' });
 });
 
+//notes
+app.get('/notes', (req, res) => {
+  res.status(200).json({ message: 'Retrieved all notes' });
+});
+
+//notes/:noteId
+app.get('/notes/:noteId', (req, res) => {
+  const id_param = req.params.noteId;
+  res.status(200).json({ message: `Retrieved note with ID: ${id_param}` });
+});
+
 // Маршрут для тестування middleware помилки
 app.get('/test-error', (req, res) => {
   // Штучна помилка для прикладу
-  throw new Error('Something went wrong');
+  throw new Error('Simulated server error');
 });
 
 // Middleware 404 (після всіх маршрутів)
@@ -55,7 +66,7 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error(err);
 
-  const isProd = process.env.NODE_ENV === 'development';
+  const isProd = process.env.NODE_ENV === 'production';
 
   res.status(500).json({
     message: isProd
